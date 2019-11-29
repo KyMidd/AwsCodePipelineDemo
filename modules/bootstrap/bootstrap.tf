@@ -15,11 +15,6 @@ resource "aws_s3_bucket" "state_bucket" {
     }
   }
 
-  # Prevents Terraform from destroying or replacing this object - a great safety mechanism
-  lifecycle {
-    prevent_destroy = true
-  }
-
   # Tells AWS to keep a version history of the state file
   versioning {
     enabled = true
@@ -195,10 +190,6 @@ resource "aws_iam_role" "tf_iam_assumed_role" {
 }
 EOF
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
   tags = {
     Terraform = "true"
   }
@@ -224,18 +215,10 @@ resource "aws_iam_policy" "tf_iam_assumed_policy" {
   ]
 }
 EOF
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 # Attach IAM assume role to policy
 resource "aws_iam_role_policy_attachment" "tf_iam_attach_assumed_role_to_permissions_policy" {
   role       = aws_iam_role.tf_iam_assumed_role.name
   policy_arn = aws_iam_policy.tf_iam_assumed_policy.arn
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
