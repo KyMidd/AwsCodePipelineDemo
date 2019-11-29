@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.7
+    commands:
+      - tf_version=$TERRAFORM_VERSION
+      - wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+      - unzip terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+  build:
+    commands:
+      - terraform --version
+      - terraform init -input=false
+      - terraform validate
+      - terraform plan -lock=false -input=false
